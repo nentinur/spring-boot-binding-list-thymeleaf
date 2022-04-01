@@ -6,8 +6,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
+import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.apache.http.entity.ContentType.DEFAULT_BINARY;
+
 @WebMvcTest
 @EnableWebMvc
 class EmployeeControllerTest {
@@ -19,4 +23,32 @@ class EmployeeControllerTest {
 
     @MockBean
     private EmployeeService employeeService;
+
+    @Test
+    public void givenFormData_whenPost_thenReturns200OK() throws Exception {
+        mockMvc.perform(multipart("/employees")
+                        .file(A_FILE)
+                        .param("name", "testname"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void givenEmployeeJsonAndMultipartFile_whenPostWithRequestPart_thenReturnsOK() throws Exception {
+        MockMultipartFile employeeJson = new MockMultipartFile("employee", null,
+                "application/json", "{\"name\": \"Emp Name\"}".getBytes());
+
+        mockMvc.perform(multipart("/employees/requestpart")
+                        .file(A_FILE)
+                        .file(employeeJson))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void givenRequestPartAndRequestParam_whenPost_thenReturns200OK() throws Exception {
+        mockMvc.perform(multipart("/employees/requestparam")
+                        .file(A_FILE)
+                        .param("name", "testname"))
+                .andExpect(status().isOk());
+    }
+
 }

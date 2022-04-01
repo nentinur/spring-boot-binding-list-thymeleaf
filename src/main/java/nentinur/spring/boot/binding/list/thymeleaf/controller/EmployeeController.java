@@ -39,7 +39,7 @@ public class EmployeeController {
 
     @PostMapping(path = "/requestparam", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Object> saveEmployee(@RequestParam String name, @RequestPart MultipartFile document) {
-        Employee employee = new Employee(name, document);
+        Employee employee = new Employee(name,document);
         employeeService.save(employee);
         return ResponseEntity.ok().build();
     }
