@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import nentinur.spring.boot.binding.list.thymeleaf.model.Book;
+import nentinur.spring.boot.binding.list.thymeleaf.model.BooksCreationDto;
+import nentinur.spring.boot.binding.list.thymeleaf.service.BookService;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,16 +24,20 @@ public class BooksController {
     @GetMapping
     public String showAll(Model model) {
         model.addAttribute("books", bookService.findAll());
+
         return "books/allBooks";
     }
 
     @GetMapping(value = "/create")
     public String showCreateForm(Model model) {
         BooksCreationDto booksForm = new BooksCreationDto();
+
         for (int i = 1; i <= 3; i++) {
             booksForm.addBook(new Book());
         }
+
         model.addAttribute("form", booksForm);
+
         return "books/createBooksForm";
     }
 
@@ -40,7 +47,9 @@ public class BooksController {
         bookService.findAll()
                 .iterator()
                 .forEachRemaining(books::add);
+
         model.addAttribute("form", new BooksCreationDto(books));
+
         return "books/editBooksForm";
     }
 
@@ -50,7 +59,6 @@ public class BooksController {
 
         model.addAttribute("books", bookService.findAll());
 
-        return "redirect:/books/all";
         return "redirect:/books";
     }
 }

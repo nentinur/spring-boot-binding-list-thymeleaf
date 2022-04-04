@@ -1,16 +1,14 @@
 package nentinur.spring.boot.binding.list.thymeleaf.controller;
 
 import lombok.AllArgsConstructor;
+import nentinur.spring.boot.binding.list.thymeleaf.employee.Employee;
 import org.springframework.http.MediaType;
-import nentinur.spring.boot.binding.list.thymeleaf.service.Employee;
 import nentinur.spring.boot.binding.list.thymeleaf.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.awt.*;
 
 @Controller
 @AllArgsConstructor
@@ -20,7 +18,7 @@ public class EmployeeController {
 
     @GetMapping
     public String showEmployeeForm(Model model) {
-        model.addAttribute("employee", new Employee());
+        model.addAttribute("employees", new Employee());
         return "employees/createEmployeeForm";
     }
 
@@ -39,8 +37,9 @@ public class EmployeeController {
 
     @PostMapping(path = "/requestparam", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Object> saveEmployee(@RequestParam String name, @RequestPart MultipartFile document) {
-        Employee employee = new Employee(name,document);
+        Employee employee = new Employee(name, document);
         employeeService.save(employee);
         return ResponseEntity.ok().build();
     }
+
 }

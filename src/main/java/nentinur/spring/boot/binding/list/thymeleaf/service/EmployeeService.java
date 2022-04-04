@@ -1,6 +1,8 @@
 package nentinur.spring.boot.binding.list.thymeleaf.service;
 
+import nentinur.spring.boot.binding.list.thymeleaf.employee.Employee;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
